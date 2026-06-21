@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="대학생 및 학습자를 위한 개인 과제 관리 대시보드. 마감일과 진행 상황을 직관적으로 확인하고 학업 성과를 향상시키세요.">
+    <title>스마트 학업 매니저 | 개인 과제 관리 프로그램</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-graduation-cap logo-icon"></i>
+                    <h2>Edu<span>Task</span></h2>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" id="menu-dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>대시보드</span>
+                </a>
+                <a href="#" class="menu-item" id="btn-add-shortcut">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span>새 과제 추가</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">JU</div>
+                    <div class="user-details">
+                        <span class="user-name">홍주언</span>
+                        <span class="user-dept">서어서문학과</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="과목명 또는 과제명으로 검색해보세요...">
+                </div>
+                <div class="header-actions">
+                    <div class="live-clock" id="live-clock">2026-06-21 00:00:00</div>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="테마 전환">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-scrollable">
+                <div class="dashboard-welcome">
+                    <h1>안녕하세요, <span>홍주언</span>님!</h1>
+                    <p>오늘 등록된 학업 일정을 확인하고 체계적으로 준비해 보세요.</p>
+                </div>
+
+                <!-- Stats Panel -->
+                <section class="stats-container" aria-label="과제 요약 통계">
+                    <div class="stat-card total">
+                        <div class="stat-icon-wrapper">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">전체 과제</span>
+                            <span class="stat-value" id="stat-total">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card todo">
+                        <div class="stat-icon-wrapper">
+                            <i class="fa-solid fa-hourglass-start"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">시작 전</span>
+                            <span class="stat-value" id="stat-todo">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card doing">
+                        <div class="stat-icon-wrapper">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">진행 중</span>
+                            <span class="stat-value" id="stat-doing">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card done">
+                        <div class="stat-icon-wrapper">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">완료됨</span>
+                            <span class="stat-value" id="stat-done">0</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Completion Progress Section -->
+                <div class="progress-bar-container">
+                    <div class="progress-bar-header">
+                        <span>전체 학업 완료 진행률</span>
+                        <span class="progress-percent" id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Controls & Filters Section -->
+                <section class="controls-panel">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">전체</button>
+                        <button class="filter-tab" data-filter="시작 전">시작 전</button>
+                        <button class="filter-tab" data-filter="진행 중">진행 중</button>
+                        <button class="filter-tab" data-filter="완료">완료</button>
+                    </div>
+                    <div class="action-buttons-group">
+                        <div class="sort-selector-wrapper">
+                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                            <select id="sort-select">
+                                <option value="due-asc">마감일 가까운 순</option>
+                                <option value="due-desc">마감일 먼 순</option>
+                                <option value="subject-asc">과목명 순</option>
+                                <option value="title-asc">과제명 순</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="btn-open-modal">
+                            <i class="fa-solid fa-plus"></i> 과제 추가
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Assignment Grid List -->
+                <section class="assignment-grid" id="assignment-grid">
+                    <!-- Cards will be dynamically injected here via app.js -->
+                    <div class="empty-state" id="empty-state">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <p>등록된 과제가 없습니다.<br>오른쪽 위의 '+ 과제 추가' 버튼을 눌러 첫 과제를 등록해보세요!</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add / Edit Modal Overlay -->
+    <div class="modal-overlay" id="assignment-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">새로운 과제 등록</h3>
+                <button class="modal-close" id="btn-close-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="assignment-form">
+                <input type="hidden" id="assignment-id">
+                
+                <div class="form-group">
+                    <label for="form-subject">과목명 <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-book"></i>
+                        <input type="text" id="form-subject" placeholder="예: 서양문화사, 프로그래밍 기초" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-title">과제명 <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <input type="text" id="form-title" placeholder="예: 중간 독후감 제출, 2주차 과제" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-due-date">마감일 <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        <input type="date" id="form-due-date" required>
+                    </div>
+                </div>
+
+                <div class="form-group" id="form-status-group" style="display: none;">
+                    <label for="form-status">진행 상태</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-spinner"></i>
+                        <select id="form-status">
+                            <option value="시작 전">⚪ 시작 전</option>
+                            <option value="진행 중">🔵 진행 중</option>
+                            <option value="완료">🟢 완료</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-modal">취소</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit-modal">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript file -->
+    <script src="app.js"></script>
+</body>
+</html>
